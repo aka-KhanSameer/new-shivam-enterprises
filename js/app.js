@@ -217,8 +217,15 @@ Requirements: ${requirements}
         }).catch(err => console.error("Web3Forms transmission error:", err));
       }
 
-      // Redirect to the thank-you page with params for personalization
-      const redirectUrl = `./thank-you.html?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(mobile)}&action=${submissionAction}`;
+      // Get directory path of the current page dynamically to prevent 404s on subfolders
+      let path = window.location.pathname;
+      if (path.endsWith('index.html')) {
+        path = path.substring(0, path.length - 10); // Strip 'index.html'
+      }
+      if (!path.endsWith('/')) {
+        path += '/';
+      }
+      const redirectUrl = `${path}thank-you.html?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(mobile)}&action=${submissionAction}`;
       window.location.href = redirectUrl;
     });
   }
