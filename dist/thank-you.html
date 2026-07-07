@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You for Your Enquiry | New Shivam Enterprises</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Tag Manager -->
+  <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NSE2026');
+  </script>
+  <!-- End Google Tag Manager -->
+
+  <!-- Google Analytics & Google Ads Conversion Event -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NSEGA42026"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NSEGA42026');
+    gtag('config', 'AW-1122334455'); // Google Ads Account
+
+    // Fire Google Ads Conversion Event
+    gtag('event', 'conversion', {
+      'send_to': 'AW-1122334455/AbCdEfGhIjKlMnOpQrS',
+      'value': 1.0,
+      'currency': 'INR'
+    });
+
+    // Fire GA4 Lead Event
+    gtag('event', 'generate_lead', {
+      'event_category': 'Engagement',
+      'event_label': 'Security Enquiry Form'
+    });
+  </script>
+
+  <!-- Meta Pixel Lead Event -->
+  <script>
+    if(window.fbq) {
+      fbq('track', 'Lead', {
+        value: 1.0,
+        currency: 'INR'
+      });
+    }
+  </script>
+  <link rel="stylesheet" crossorigin href="/assets/styles-BtbzhnX_.css">
+</head>
+<body class="thank-you-layout">
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NSE2026"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <div class="thank-you-card">
+    <div class="success-icon-wrap">
+      <i class="fa-solid fa-circle-check"></i>
+    </div>
+    
+    <h1 id="thankYouTitle">Thank You!</h1>
+    <p class="thank-you-text" id="thankYouMessage">Thank you. Our security expert will contact you shortly.</p>
+    
+    <div class="thank-actions">
+      <!-- Quick WhatsApp chat to speed up contact -->
+      <a href="" id="whatsappFastTrack" target="_blank" class="btn btn-whatsapp">
+        <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp Now
+      </a>
+      <a href="/" class="btn btn-outline">
+        <i class="fa-solid fa-arrow-left-long"></i> Back to Homepage
+      </a>
+    </div>
+
+    <p class="redirect-notice">
+      Redirecting back to homepage in <span id="countdown">10</span> seconds...
+    </p>
+  </div>
+
+  <script>
+    // Extract query parameters to personalize message and prepare direct WhatsApp link
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = urlParams.get('name') || '';
+    const phone = urlParams.get('phone') || '';
+    const action = urlParams.get('action') || 'quote';
+    
+    if (name) {
+      document.getElementById('thankYouTitle').textContent = `Thank You, ${name}!`;
+    }
+    
+    // Set custom descriptive message based on form submit action
+    if (action === 'survey') {
+      document.getElementById('thankYouMessage').textContent = "We have received your Site Survey request. A technician will call you shortly to confirm the appointment.";
+    } else {
+      document.getElementById('thankYouMessage').textContent = "Thank you. Our security expert will contact you shortly with your free customized price quote.";
+    }
+
+    // Direct WhatsApp redirection fast-track link creation
+    const companyPhone = "919580952894";
+    let templateMsg = `Hi New Shivam Enterprises, my name is ${name}. I just filled out your online security enquiry form and would like to fast-track my quote request.`;
+    if (action === 'survey') {
+      templateMsg = `Hi New Shivam Enterprises, my name is ${name}. I just booked a site survey request online. Please coordinate my technician visit.`;
+    }
+    const waUrl = `https://wa.me/${companyPhone}?text=${encodeURIComponent(templateMsg)}`;
+    document.getElementById('whatsappFastTrack').href = waUrl;
+
+    // Countdown and automatic redirect timer
+    let count = 10;
+    const counterElement = document.getElementById('countdown');
+    const interval = setInterval(() => {
+      count--;
+      counterElement.textContent = count;
+      if (count <= 0) {
+        clearInterval(interval);
+        window.location.href = "/";
+      }
+    }, 1000);
+
+    // Track simulated triggers in console for development inspection
+    console.log("Simulating conversion firing:");
+    console.log("- Google Ads Tag fired: AW-1122334455/AbCdEfGhIjKlMnOpQrS");
+    console.log("- GA4 Event fired: generate_lead");
+    console.log("- Meta Pixel Lead fired: value=1.0, currency=INR");
+  </script>
+</body>
+</html>
