@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NSE Security - Lead CRM Dashboard</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script type="module" crossorigin src="./assets/admin-BB_86TAM.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/modulepreload-polyfill-Dezn_h7o.js">
+  <link rel="stylesheet" crossorigin href="./assets/styles-BnZe3vak.css">
+</head>
+<body class="crm-layout">
+
+  <!-- Password Login Gating Screen -->
+  <div class="crm-login-wrap" id="loginScreen">
+    <div class="crm-login-card">
+      <div class="text-center" style="margin-bottom: 24px;">
+        <div class="logo-icon" style="margin: 0 auto 12px; width: 50px; height: 50px; font-size: 1.5rem;"><i class="fa-solid fa-shield-halved"></i></div>
+        <h2 style="margin: 0;">NSE Security CRM</h2>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 4px;">Enter administrative password to view enquiries</p>
+      </div>
+      
+      <form id="crmLoginForm">
+        <div class="login-error" id="loginErrorMsg">Incorrect password. Please try again.</div>
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label for="adminPassword" class="form-label">Password</label>
+          <input type="password" id="adminPassword" class="form-input" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">
+          <i class="fa-solid fa-lock-open"></i> Authenticate Dashboard
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Authenticated CRM Panel -->
+  <div id="crmDashboard" style="display: none;">
+    <!-- CRM Header -->
+    <header class="crm-header">
+      <div class="container crm-header-container">
+        <a href="./" class="logo-wrap">
+          <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+          <div class="logo-text">
+            <span style="color: white;">New Shivam</span>
+            <span style="color: var(--secondary);">Enterprises CRM</span>
+          </div>
+        </a>
+        <button class="crm-logout" id="btnCrmLogout">
+          <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+        </button>
+      </div>
+    </header>
+
+    <!-- Main CRM Content -->
+    <main class="container" style="padding-bottom: 60px;">
+      <!-- Stats Cards -->
+      <section class="crm-stats-grid">
+        <div class="stat-card">
+          <span class="stat-num" id="statTotalLeads">0</span>
+          <span class="stat-label">Total Leads</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num" id="statQuotes">0</span>
+          <span class="stat-label">Quote Requests</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num" id="statSurveys">0</span>
+          <span class="stat-label">Site Surveys</span>
+        </div>
+        <div class="stat-card" style="border-right-color: var(--secondary);">
+          <span class="stat-num" id="statCctvLeads">0</span>
+          <span class="stat-label">CCTV Enquiries</span>
+        </div>
+      </section>
+
+      <!-- Search & Filters Toolbar -->
+      <section class="crm-controls">
+        <div class="crm-filters">
+          <input type="text" id="crmSearchInput" class="form-input crm-search" placeholder="Search by name, phone, city, state...">
+          
+          <select id="filterProperty" class="form-input crm-select">
+            <option value="all">All Properties</option>
+            <option value="Home">Home</option>
+            <option value="Office">Office</option>
+            <option value="Shop">Shop</option>
+            <option value="Warehouse">Warehouse</option>
+            <option value="Factory">Factory</option>
+            <option value="School">School</option>
+            <option value="Hospital">Hospital</option>
+            <option value="Other">Other</option>
+          </select>
+
+          <select id="filterAction" class="form-input crm-select">
+            <option value="all">All Leads</option>
+            <option value="quote">Quotes Only</option>
+            <option value="survey">Surveys Only</option>
+          </select>
+        </div>
+
+        <div>
+          <button class="btn btn-secondary" id="btnDownloadCsv" style="background-color: var(--primary); border:1px solid rgba(0,0,0,0.15);">
+            <i class="fa-solid fa-file-excel"></i> Export CSV
+          </button>
+        </div>
+      </section>
+
+      <!-- Lead Data Table -->
+      <section class="crm-table-container">
+        <table class="crm-table" id="crmLeadsTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Name</th>
+              <th>Contact Details</th>
+              <th>Location</th>
+              <th>Property</th>
+              <th>Type</th>
+              <th>Interests</th>
+              <th style="max-width: 250px;">Requirements</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="crmLeadsBody">
+            <!-- Dynamic rows loaded here -->
+            <tr>
+              <td colspan="9" class="text-center" style="padding: 40px; color: var(--text-muted);">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 12px; display: block; color: var(--secondary);"></i>
+                Loading enquiries...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+</body>
+</html>
