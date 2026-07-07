@@ -218,7 +218,7 @@ Requirements: ${requirements}
       }
 
       // Redirect to the thank-you page with params for personalization
-      const redirectUrl = `/thank-you.html?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(mobile)}&action=${submissionAction}`;
+      const redirectUrl = `./thank-you.html?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(mobile)}&action=${submissionAction}`;
       window.location.href = redirectUrl;
     });
   }
