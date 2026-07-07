@@ -9,4 +9,4 @@ Property Type: ${o}
 Enquiry Type: ${s===`survey`?`Site Survey`:`Price Quote`}
 Interested In: ${l.join(`, `)}
 Requirements: ${c}
-        `),fetch(`https://api.web3forms.com/submit`,{method:`POST`,body:e}).catch(e=>console.error(`Web3Forms transmission error:`,e))}let f=`/thank-you.html?name=${encodeURIComponent(t)}&phone=${encodeURIComponent(n)}&action=${s}`;window.location.href=f})}});
+        `),fetch(`https://api.web3forms.com/submit`,{method:`POST`,body:e}).catch(e=>console.error(`Web3Forms transmission error:`,e))}let f=`./thank-you.html?name=${encodeURIComponent(t)}&phone=${encodeURIComponent(n)}&action=${s}`;window.location.href=f})}});
