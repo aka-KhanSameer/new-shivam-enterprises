@@ -1,6 +1,7 @@
 {
   "name": "new-shivam-enterprises",
   "version": "1.0.0",
+  "type": "module",
   "description": "Premium security & surveillance business website for New Shivam Enterprises",
   "private": true,
   "scripts": {
