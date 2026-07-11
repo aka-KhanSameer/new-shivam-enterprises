@@ -130,75 +130,92 @@ document.addEventListener('DOMContentLoaded', () => {
     enquiryForm.addEventListener('submit', (e) => {
       e.preventDefault();
 
-      // Collect field values
-      const name = document.getElementById('fullName').value.trim();
-      const mobile = document.getElementById('mobileNumber').value.trim();
-      const email = document.getElementById('emailAddress').value.trim();
-      const city = document.getElementById('city').value.trim();
-      const state = document.getElementById('state').value.trim();
-      const property = document.getElementById('propertyType').value;
-      const requirements = document.getElementById('additionalRequirements').value.trim();
-
-      // Collect checked services
-      const selectedServices = [];
-      const serviceCheckboxes = document.querySelectorAll('input[name="services"]:checked');
-      serviceCheckboxes.forEach(cb => {
-        selectedServices.push(cb.value);
-      });
-
-      // Validation check for services (at least one checkbox must be checked)
-      if (selectedServices.length === 0) {
-        alert("Please select at least one service/product you are interested in.");
-        return;
-      }
-
-      // Prepare lead payload
-      const leadPayload = {
-        id: 'lead_' + Date.now(),
-        date: new Date().toISOString(),
-        name: name,
-        mobile: mobile,
-        email: email,
-        city: city,
-        state: state,
-        property: property,
-        services: selectedServices,
-        requirements: requirements,
-        actionType: submissionAction
-      };
-
-      // Retrieve existing leads database or create new
-      let leadsDb = [];
       try {
-        const storedLeads = localStorage.getItem('nse_leads');
-        if (storedLeads) {
-          leadsDb = JSON.parse(storedLeads);
+        // Collect field values
+        const name = document.getElementById('fullName').value.trim();
+        const mobile = document.getElementById('mobileNumber').value.trim();
+        const email = document.getElementById('emailAddress').value.trim();
+        const city = document.getElementById('city').value.trim();
+        const state = document.getElementById('state').value.trim();
+        const property = document.getElementById('propertyType').value;
+        const requirements = document.getElementById('additionalRequirements').value.trim();
+
+        // Collect checked services
+        const selectedServices = [];
+        const serviceCheckboxes = document.querySelectorAll('input[name="services"]:checked');
+        serviceCheckboxes.forEach(cb => {
+          selectedServices.push(cb.value);
+        });
+
+        // Validation check for services (at least one checkbox must be checked)
+        if (selectedServices.length === 0) {
+          alert("Please select at least one service/product you are interested in.");
+          return;
         }
-      } catch (err) {
-        console.error("Error reading localStorage database:", err);
-      }
 
-      // Add new lead and store
-      leadsDb.unshift(leadPayload);
-      localStorage.setItem('nse_leads', JSON.stringify(leadsDb));
+        // Show loading state on buttons to prevent double click
+        const btnQuote = document.getElementById('btnQuote');
+        const btnSurvey = document.getElementById('btnSurvey');
+        if (btnQuote) { btnQuote.disabled = true; btnQuote.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...'; }
+        if (btnSurvey) { btnSurvey.disabled = true; btnSurvey.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...'; }
 
-      // Trigger tracking tags simulation logs
-      console.log("Saving lead to localStorage CRM database:", leadPayload);
-      console.log("Fired GTM Trigger: lead_form_submit");
-      
-      // Web3Forms API Email Delivery Configuration
-      // Note: To activate live email alerts, paste your Web3Forms Access Key here.
-      // Get a free key instantly by putting your email at https://web3forms.com/
-      const WEB3FORMS_ACCESS_KEY = "f7308574-f69a-40f8-8aed-c62b7a9d4a11";
+        // Prepare lead payload
+        const leadPayload = {
+          id: 'lead_' + Date.now(),
+          date: new Date().toISOString(),
+          name: name,
+          mobile: mobile,
+          email: email,
+          city: city,
+          state: state,
+          property: property,
+          services: selectedServices,
+          requirements: requirements,
+          actionType: submissionAction
+        };
 
-      if (WEB3FORMS_ACCESS_KEY && WEB3FORMS_ACCESS_KEY !== "YOUR_WEB3FORMS_ACCESS_KEY_HERE") {
-        const formData = new FormData();
-        formData.append("access_key", WEB3FORMS_ACCESS_KEY);
-        formData.append("name", name);
-        formData.append("email", email);
-        formData.append("phone", mobile);
-        formData.append("subject", `New Shivam Enterprises - ${submissionAction === 'survey' ? 'Site Survey' : 'Quote Request'} from ${name}`);
-        formData.append("message", `
+        // Retrieve existing leads database or create new
+        let leadsDb = [];
+        try {
+          const storedLeads = localStorage.getItem('nse_leads');
+          if (storedLeads) {
+            leadsDb = JSON.parse(storedLeads);
+          }
+        } catch (err) {
+          console.error("Error reading localStorage database:", err);
+        }
+
+        // Add new lead and store
+        leadsDb.unshift(leadPayload);
+        localStorage.setItem('nse_leads', JSON.stringify(leadsDb));
+
+        // Trigger tracking tags simulation logs
+        console.log("Saving lead to localStorage CRM database:", leadPayload);
+        console.log("Fired GTM Trigger: lead_form_submit");
+        
+        const redirect = () => {
+          let path = window.location.pathname;
+          if (path.endsWith('index.html')) {
+            path = path.substring(0, path.length - 10); // Strip 'index.html'
+          }
+          if (!path.endsWith('/')) {
+            path += '/';
+          }
+          const redirectUrl = `${path}thank-you.html?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(mobile)}&action=${submissionAction}`;
+          window.location.href = redirectUrl;
+        };
+
+        // Web3Forms API Email Delivery Configuration
+        const WEB3FORMS_ACCESS_KEY = "f7308574-f69a-40f8-8aed-c62b7a9d4a11";
+
+        if (WEB3FORMS_ACCESS_KEY && WEB3FORMS_ACCESS_KEY !== "YOUR_WEB3FORMS_ACCESS_KEY_HERE") {
+          const formData = new FormData();
+          formData.append("access_key", WEB3FORMS_ACCESS_KEY);
+          formData.append("name", name);
+          formData.append("email", email);
+          formData.append("phone", mobile);
+          formData.append("subject", `New Shivam Enterprises - ${submissionAction === 'survey' ? 'Site Survey' : 'Quote Request'} from ${name}`);
+          formData.append("message", `
 New Security Enquiry Details:
 ------------------------------------------
 Name: ${name}
@@ -209,24 +226,38 @@ Property Type: ${property}
 Enquiry Type: ${submissionAction === 'survey' ? 'Site Survey' : 'Price Quote'}
 Interested In: ${selectedServices.join(', ')}
 Requirements: ${requirements}
-        `);
+          `);
 
-        fetch("https://api.web3forms.com/submit", {
-          method: "POST",
-          body: formData
-        }).catch(err => console.error("Web3Forms transmission error:", err));
-      }
+          // Set up a 4-second timeout limit to prevent getting stuck if network is blocked
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => {
+            console.warn("Web3Forms request timed out. Redirecting...");
+            controller.abort();
+            redirect();
+          }, 4000);
 
-      // Get directory path of the current page dynamically to prevent 404s on subfolders
-      let path = window.location.pathname;
-      if (path.endsWith('index.html')) {
-        path = path.substring(0, path.length - 10); // Strip 'index.html'
+          fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            body: formData,
+            signal: controller.signal,
+            keepalive: true
+          })
+          .then(() => {
+            clearTimeout(timeoutId);
+            redirect();
+          })
+          .catch(err => {
+            clearTimeout(timeoutId);
+            console.error("Web3Forms transmission error:", err);
+            redirect(); // Redirect anyway on error
+          });
+        } else {
+          redirect();
+        }
+      } catch (submitError) {
+        console.error("Error during form submit processing:", submitError);
+        alert("An error occurred while saving your details. Please try again.");
       }
-      if (!path.endsWith('/')) {
-        path += '/';
-      }
-      const redirectUrl = `${path}thank-you.html?name=${encodeURIComponent(name)}&phone=${encodeURIComponent(mobile)}&action=${submissionAction}`;
-      window.location.href = redirectUrl;
     });
   }
 });
